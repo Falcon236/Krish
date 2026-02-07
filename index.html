@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For My Bubu Don 🌹</title>
     <style>
         /* General Styles */
@@ -10,7 +10,9 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffe6e9; /* Soft Pink */
+            background: linear-gradient(135deg, #ffe6e9 0%, #ffc0cb 100%);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
             color: #d6336c;
             display: flex;
             justify-content: center;
@@ -20,155 +22,257 @@
             text-align: center;
         }
 
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .container {
             width: 90%;
             max-width: 400px;
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
+            transition: all 0.5s ease;
         }
 
-        h1 { font-size: 24px; margin-bottom: 10px; }
-        p { font-size: 16px; color: #555; }
+        h1 { font-size: 26px; margin-bottom: 10px; color: #ff2a4d; }
+        p { font-size: 16px; color: #666; line-height: 1.5; }
 
         /* Buttons */
         .btn {
-            background-color: #ff4d6d;
+            background: linear-gradient(45deg, #ff4d6d, #ff2a4d);
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 15px 30px;
             border-radius: 50px;
             font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
             margin-top: 20px;
             width: 80%;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            animation: pulse 2s infinite;
         }
         .btn:active { transform: scale(0.95); }
 
-        /* Hidden Classes */
-        .hidden { display: none; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
 
-        /* Progress Bar for Level 2 */
+        /* Hidden Classes & Transitions */
+        .hidden { display: none; }
+        
+        .fade-in {
+            animation: fadeIn 0.8s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Level 2 Game Area */
+        .click-area {
+            font-size: 70px;
+            margin: 20px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: inline-block;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Removes blue box on mobile */
+        }
+        .click-area:active {
+            transform: scale(0.8);
+        }
+
         .progress-container {
             width: 100%;
-            background-color: #eee;
-            border-radius: 10px;
+            background-color: #ffe6e9;
+            border-radius: 15px;
             margin: 20px 0;
-            height: 20px;
+            height: 25px;
             overflow: hidden;
+            border: 2px solid white;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
         .progress-bar {
             height: 100%;
             width: 0%;
-            background-color: #ff4d6d;
-            transition: width 0.1s;
+            background: linear-gradient(90deg, #ff4d6d, #ff8fa3);
+            transition: width 0.2s cubic-bezier(0.4, 1, 0.7, 0.93);
+        }
+
+        /* Floating Mini Hearts */
+        .floating-heart {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 24px;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
         }
 
         /* Images */
         .photo-gallery img {
             width: 100%;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 3px solid #ffccd5;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: scale(0);
+            animation: popIn 0.5s forwards;
+        }
+        
+        .photo-gallery img:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes popIn {
+            to { transform: scale(1); }
         }
 
         /* Rose Animation */
         .rose-icon {
-            font-size: 50px;
+            font-size: 60px;
             animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
         }
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="container fade-in" id="mainContainer">
         
         <div id="screen1">
             <h1>❤️ Security Check ❤️</h1>
             <p>Access restricted to the prettiest girl in the world.</p>
-            <p><strong> Are you Gitika (aka Bubu)?</strong></p>
+            <p><strong>Are you Gitika (aka Bubu)?</strong></p>
             <button class="btn" onclick="goToLevel2()">Yes, that's me!</button>
         </div>
 
         <div id="screen2" class="hidden">
-            <h1>Mission: Long Distance</h1>
-            <p>Dudu is trying to send a Rose from far away! to the cutie in Texas from NYC</p>
-            <p><strong>Tap the heart fast to pull the rose closer!</strong></p>
+            <h1>Mission: NYC ✈️ Texas</h1>
+            <p>Dudu is trying to send a Rose to his cutie!</p>
+            <p><strong>Tap the heart fast to fly closer!</strong></p>
             
-            <div style="font-size: 60px; margin: 20px; cursor: pointer;" onclick="fillMeter()">💖</div>
+            <div id="heartBtn" class="click-area" onclick="fillMeter(event)">💖</div>
             
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
-            <p id="loading-text">Distance remaining: 1764 Miles...</p>
+            <p id="loading-text" style="font-weight: bold; color: #ff4d6d;">Distance remaining: 1764 Miles...</p>
         </div>
 
         <div id="screen3" class="hidden">
             <div class="rose-icon">🌹</div>
             <h1>Happy Rose Day, Bubu!</h1>
-            <p>No distance can stop me from sending you love.</p>
+            <p>No distance can keep me away from you.</p>
             
             <div class="photo-gallery">
                 <img src="gitika1.jpg" alt="My beautiful Dudu"> 
                 <img src="gitika2.jpg" alt="Us">
             </div>
 
-            <p>I love you, Gitika. <br>- Your Dudu (Krish)</p>
+            <p style="font-size: 18px; margin-top: 20px;">I love you, Gitika. <br>Forever & Always.<br>- Your Dudu (Krish)</p>
         </div>
 
     </div>
 
     <script>
         let progress = 0;
+        const totalDistance = 1764; // Fun detail
 
         function goToLevel2() {
-            document.getElementById('screen1').classList.add('hidden');
+            // Smooth transition
+            document.getElementById('screen1').style.display = 'none';
             document.getElementById('screen2').classList.remove('hidden');
+            document.getElementById('screen2').classList.add('fade-in');
         }
 
-        function fillMeter() {
-            progress += 5; // Increases by 5% every click
-            document.getElementById('progressBar').style.width = progress + '%';
+        function fillMeter(event) {
+            // 1. Logic
+            progress += 6; // Faster progress
+            let currentWidth = Math.min(progress, 100);
+            document.getElementById('progressBar').style.width = currentWidth + '%';
             
-            // Fun text updates
+            // 2. Animation: Floating Hearts
+            createFloatingHeart(event.clientX, event.clientY);
+
+            // 3. Animation: Button thump
+            let heartBtn = document.getElementById('heartBtn');
+            heartBtn.style.transform = "scale(0.8)";
+            setTimeout(() => heartBtn.style.transform = "scale(1)", 100);
+
+            // 4. Text Updates
+            let remaining = Math.max(0, Math.floor(totalDistance - (totalDistance * (progress / 100))));
+            
             if(progress < 30) {
-                document.getElementById('loading-text').innerText = "Crossing the states between NYC and Texas...";
+                document.getElementById('loading-text').innerText = `Leaving NYC... ${remaining} miles left`;
             } else if (progress < 60) {
-                document.getElementById('loading-text').innerText = "Fighting the bad internet...";
+                document.getElementById('loading-text').innerText = `Flying over the clouds... ${remaining} miles left`;
             } else if (progress < 90) {
-                document.getElementById('loading-text').innerText = "Almost there! Keep tapping!";
+                document.getElementById('loading-text').innerText = `Entering Texas Airspace! ${remaining} miles left`;
             }
 
             if (progress >= 100) {
-                setTimeout(goToLevel3, 500);
+                document.getElementById('loading-text').innerText = "Touchdown! ❤️";
+                setTimeout(goToLevel3, 800);
             }
         }
 
+        function createFloatingHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.classList.add('floating-heart');
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            
+            // Randomize movement slightly
+            heart.style.left = (x - 10 + Math.random() * 20) + 'px';
+            
+            document.body.appendChild(heart);
+
+            // Remove after animation
+            setTimeout(() => {
+                heart.remove();
+            }, 1000);
+        }
+
         function goToLevel3() {
-            document.getElementById('screen2').classList.add('hidden');
+            document.getElementById('screen2').style.display = 'none';
             document.getElementById('screen3').classList.remove('hidden');
+            document.getElementById('screen3').classList.add('fade-in');
             triggerConfetti();
         }
 
-        // Simple confetti effect
         function triggerConfetti() {
-            const colors = ['#ff4d6d', '#ffccd5', '#ffffff'];
-            for (let i = 0; i < 50; i++) {
+            const colors = ['#ff4d6d', '#ff8fa3', '#ffffff', '#ff0000'];
+            for (let i = 0; i < 100; i++) {
                 const confetti = document.createElement('div');
                 confetti.style.position = 'absolute';
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.top = '-10px';
-                confetti.style.width = '10px';
-                confetti.style.height = '10px';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.opacity = Math.random();
+                confetti.style.borderRadius = '50%';
                 confetti.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
                 document.body.appendChild(confetti);
             }
