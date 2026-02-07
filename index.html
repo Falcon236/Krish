@@ -3,235 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Bubu 🌸</title>
+    <title>For Bubu ❤️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
-        :root {
-            --primary-pink: #ff8fa3;
-            --deep-rose: #d6336c;
-            --soft-blue: #e0f2fe;
-        }
-
-        body, html {
+        /* --- CSS STYLES --- */
+        body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--soft-blue);
-            overflow: hidden;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: linear-gradient(135deg, #ffc3a0 0%, #ffafbd 100%);
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🚿</text></svg>") 16 0, auto; /* Watering Can Cursor */
         }
 
-        /* Desktop Container */
-        .glass-card {
-            width: 800px;
-            height: 500px;
-            background: rgba(255, 255, 255, 0.9);
+        /* The Glass Card */
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
             border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 2px solid #fff;
             position: relative;
             z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid white;
-            text-align: center;
-            padding: 20px;
+            transition: transform 0.3s ease;
         }
 
-        .hidden { display: none !important; }
-
-        h1 { color: var(--deep-rose); font-size: 2.5rem; margin-bottom: 10px; }
-        p { color: #555; font-size: 1.2rem; max-width: 80%; }
-
-        /* The Reveal Canvas */
-        #canvas-container {
-            position: relative;
-            width: 600px;
-            height: 300px;
-            background: white;
-            border-radius: 20px;
-            cursor: crosshair;
-            overflow: hidden;
-            border: 3px dashed var(--primary-pink);
+        .card:hover {
+            transform: translateY(-5px);
         }
 
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 2;
+        /* Typography */
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #d6336c;
+            font-size: 3rem;
+            margin: 0 0 15px 0;
+            line-height: 1.2;
         }
 
-        .under-content {
+        p {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            border: none;
+            padding: 15px 40px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        /* The Game Area (Invisible overlay) */
+        #game-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
-            background: #fffafa;
+            z-index: 5;
+            display: none; /* Hidden initially */
         }
 
-        /* SVG Flower Styling */
-        .flower-svg {
-            width: 100px;
-            height: 100px;
-            margin: 10px;
-            transition: transform 0.3s;
-        }
-        .flower-svg:hover { transform: scale(1.2) rotate(5deg); }
-
-        .btn {
-            background: var(--deep-rose);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
-        .btn:hover { background: #b02454; transform: scale(1.05); }
-
-        /* Falling Petals Background */
-        .petal {
+        /* Flower Styles */
+        .flower {
             position: absolute;
-            background-color: #ffc0cb;
-            border-radius: 150% 0 150% 0;
-            opacity: 0.7;
-            pointer-events: none;
-            animation: fall linear infinite;
+            font-size: 3rem;
+            pointer-events: none; /* Let clicks pass through */
+            animation: grow 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform-origin: center bottom;
         }
 
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); }
-            100% { transform: translateY(110vh) rotate(360deg); }
+        @keyframes grow {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Utility Classes */
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 1s forwards; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <div id="petal-overlay"></div>
-
-    <div class="glass-card" id="main-container">
-        <div id="screen1">
-            <h1>Hi Bubu! ❤️</h1>
-            <p>I sent something special from NYC to Texas, but it got covered in rose petals during the flight.</p>
-            <p><strong>Can you help me clear them away?</strong></p>
-            <button class="btn" onclick="startReveal()">I'll help you, Dudu!</button>
-        </div>
-
-        <div id="screen2" class="hidden">
-            <h1>Sweep the Petals 🧹</h1>
-            <p>Use your mouse to "brush" the screen and find your flowers!</p>
-            <div id="canvas-container">
-                <div class="under-content">
-                    <svg class="flower-svg" viewBox="0 0 100 100">
-                        <path d="M50 20 C60 40 90 50 50 80 C10 50 40 40 50 20" fill="#ffb7ce" stroke="#d6336c"/>
-                        <circle cx="50" cy="50" r="5" fill="#ffd43b" />
-                    </svg>
-                    <svg class="flower-svg" viewBox="0 0 100 100">
-                        <path d="M30 40 Q50 10 70 40 L70 60 Q50 80 30 60 Z" fill="#ff4d6d" />
-                        <rect x="48" y="60" width="4" height="30" fill="#40c057" />
-                    </svg>
-                    <svg class="flower-svg" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="30" fill="#c2255c" />
-                        <path d="M50 30 Q60 50 50 70 Q40 50 50 30" fill="#f06595" />
-                    </svg>
-                </div>
-                <canvas id="scratchCanvas"></canvas>
-            </div>
-            <button id="final-btn" class="hidden btn" onclick="showFinal()">Look, Dudu! I found them!</button>
-        </div>
-
-        <div id="screen3" class="hidden">
-            <h1 style="font-size: 3.5rem;">Happy Rose Day, Bubu! 🌹</h1>
-            <p style="font-size: 1.5rem;">From NYC to Texas, my heart only beats for you.</p>
-            <div style="font-size: 100px;">🏠✈️💖</div>
-            <p>I love you, Gitika.<br><strong>- Your Dudu (Krish)</strong></p>
-        </div>
+    <div id="screen-intro" class="card">
+        <h1>Hey Bubu! ❤️</h1>
+        <p>This is a secure line from NYC to Texas.<br>I have a special delivery for <strong>Gitika</strong>.</p>
+        <button class="btn" onclick="startGame()">Open Delivery</button>
     </div>
 
+    <div id="screen-game" class="card hidden">
+        <h1>Let's Grow Love! 🌱</h1>
+        <p>The garden is empty because I miss you.<br><strong>Click anywhere on the screen</strong> to water the garden and make flowers bloom!</p>
+        <p style="font-size: 0.9rem; color: #888;">(Keep clicking until it's full!)</p>
+    </div>
+
+    <div id="screen-final" class="card hidden">
+        <h1>Happy Rose Day! 🌹</h1>
+        <p>Even though we are miles apart, my love for you grows every single day like this garden.</p>
+        <div style="font-size: 4rem; margin: 20px;">💑</div>
+        <p>I love you, Bubu.<br><strong>- Your Dudu (Krish)</strong></p>
+    </div>
+
+    <div id="game-layer" onclick="plantFlower(event)"></div>
+
     <script>
-        // 1. Create Falling Petals for Background
-        function createPetals() {
-            const container = document.getElementById('petal-overlay');
-            for(let i=0; i<30; i++) {
-                const petal = document.createElement('div');
-                petal.className = 'petal';
-                petal.style.left = Math.random() * 100 + 'vw';
-                petal.style.width = Math.random() * 15 + 10 + 'px';
-                petal.style.height = petal.style.width;
-                petal.style.animationDuration = Math.random() * 3 + 2 + 's';
-                petal.style.delay = Math.random() * 5 + 's';
-                container.appendChild(petal);
+        // CONFIGURATION
+        const flowerSequence = ['🪷', '🌷', '🌹', '🌺', '🌻']; // Lotus, Tulip, Rose, Orchid, Sunflower
+        let clickCount = 0;
+        const clicksToWin = 15; // How many clicks to finish the game
+
+        function startGame() {
+            // Hide Intro, Show Game Instructions
+            document.getElementById('screen-intro').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            document.getElementById('screen-game').classList.add('fade-in');
+            
+            // Enable the clicking layer
+            document.getElementById('game-layer').style.display = 'block';
+        }
+
+        function plantFlower(e) {
+            clickCount++;
+
+            // 1. Create the Flower Element
+            const flower = document.createElement('div');
+            flower.classList.add('flower');
+            
+            // 2. Pick the right flower (cycles through the order you gave)
+            const flowerIndex = (clickCount - 1) % flowerSequence.length;
+            flower.innerText = flowerSequence[flowerIndex];
+
+            // 3. Position it exactly where she clicked
+            // Add a little randomness so they don't stack perfectly
+            const randomX = (Math.random() - 0.5) * 50; 
+            const randomY = (Math.random() - 0.5) * 50;
+            
+            flower.style.left = (e.clientX - 25 + randomX) + 'px'; // -25 centers it
+            flower.style.top = (e.clientY - 50 + randomY) + 'px'; // -50 places bottom at cursor
+
+            // 4. Add to body
+            document.body.appendChild(flower);
+
+            // 5. Update Text (Optional dynamic feedback)
+            if (clickCount === 5) {
+                document.querySelector('#screen-game p').innerHTML = "<strong>Keep going!</strong> It's looking beautiful!";
             }
-        }
-        createPetals();
 
-        // 2. Scratch/Sweep Logic
-        const canvas = document.getElementById('scratchCanvas');
-        const ctx = canvas.getContext('2d');
-        let isDrawing = false;
-        let clearedPercent = 0;
-
-        function startReveal() {
-            document.getElementById('screen1').classList.add('hidden');
-            document.getElementById('screen2').classList.remove('hidden');
-            
-            canvas.width = 600;
-            canvas.height = 300;
-            
-            // Fill canvas with "Petal" color
-            ctx.fillStyle = '#ffccd5';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Add some "texture" to the cover
-            ctx.fillStyle = '#ffafcc';
-            for(let i=0; i<100; i++) {
-                ctx.beginPath();
-                ctx.arc(Math.random()*600, Math.random()*300, 10, 0, Math.PI*2);
-                ctx.fill();
-            }
-
-            ctx.globalCompositeOperation = 'destination-out';
-        }
-
-        function scratch(e) {
-            if(!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            ctx.beginPath();
-            ctx.arc(x, y, 30, 0, Math.PI * 2);
-            ctx.fill();
-            checkProgress();
-        }
-
-        canvas.addEventListener('mousedown', () => isDrawing = true);
-        canvas.addEventListener('mouseup', () => isDrawing = false);
-        canvas.addEventListener('mousemove', scratch);
-
-        function checkProgress() {
-            clearedPercent += 0.5; // Simple estimation
-            if(clearedPercent > 100) {
-                document.getElementById('final-btn').classList.remove('hidden');
+            // 6. Win Condition
+            if (clickCount >= clicksToWin) {
+                setTimeout(finishGame, 800);
             }
         }
 
-        function showFinal() {
-            document.getElementById('screen2').classList.add('hidden');
-            document.getElementById('screen3').classList.remove('hidden');
-            document.body.style.backgroundColor = "#fff0f3";
+        function finishGame() {
+            // Hide Game Card
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('game-layer').style.display = 'none'; // Stop clicking
+
+            // Show Final Card
+            const finalScreen = document.getElementById('screen-final');
+            finalScreen.classList.remove('hidden');
+            finalScreen.classList.add('fade-in');
+            
+            // Burst of confetti flowers at the end
+            triggerFlowerConfetti();
+        }
+
+        function triggerFlowerConfetti() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const f = document.createElement('div');
+                    f.classList.add('flower');
+                    f.innerText = flowerSequence[Math.floor(Math.random() * flowerSequence.length)];
+                    f.style.position = 'fixed';
+                    f.style.left = Math.random() * 100 + 'vw';
+                    f.style.top = '-50px';
+                    f.style.transition = 'top 3s ease-in, transform 3s ease-in';
+                    document.body.appendChild(f);
+
+                    // Make them fall
+                    setTimeout(() => {
+                        f.style.top = '110vh';
+                        f.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    }, 50);
+                }, i * 50);
+            }
         }
     </script>
 </body>
